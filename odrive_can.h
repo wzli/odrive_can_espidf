@@ -73,6 +73,12 @@ typedef enum {
 } ODriveInputMode;
 
 // Protocol Messages
+
+// position in units of turns
+// velocity in units of turns per second
+// torque in units of Nm
+// refer to https://github.com/odriverobotics/ODrive/blob/master/Firmware/odrive-interface.yaml
+
 typedef struct {
     uint32_t axis_error;
     uint32_t axis_current_state;
