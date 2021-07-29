@@ -159,5 +159,5 @@ typedef struct {
 
 // Public Functions
 esp_err_t odrive_send_command(
-        uint8_t axis_id, uint8_t cmd_id, void* buf, int len);
+        uint8_t axis_id, uint8_t cmd_id, const void* buf, int len);
 esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len);

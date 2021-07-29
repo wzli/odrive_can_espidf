@@ -9,7 +9,7 @@ static void log_msg(const twai_message_t* msg, const char* str) {
 }
 
 esp_err_t odrive_send_command(
-        uint8_t axis_id, uint8_t cmd_id, void* buf, int len) {
+        uint8_t axis_id, uint8_t cmd_id, const void* buf, int len) {
     twai_message_t msg = {};
     msg.identifier = ODRIVE_MSG_ID(axis_id, cmd_id);
     msg.data_length_code = len;
