@@ -77,7 +77,8 @@ typedef enum {
 // position in units of turns
 // velocity in units of turns per second
 // torque in units of Nm
-// refer to https://github.com/odriverobotics/ODrive/blob/master/Firmware/odrive-interface.yaml
+// refer to
+// https://github.com/odriverobotics/ODrive/blob/master/Firmware/odrive-interface.yaml
 
 typedef struct {
     uint32_t axis_error;
@@ -150,8 +151,13 @@ typedef struct {
     uint32_t encoder_error;
     uint32_t sensorless_error;
     ODriveUpdates updates;
+
+    void (*state_transition_callback)(uint8_t axis_id,
+            ODriveAxisState new_state, ODriveAxisState old_state, void* ctx);
+    void* state_transition_context;
 } ODriveAxis;
 
 // Public Functions
-esp_err_t odrive_send_command(uint8_t axis_id, uint8_t cmd_id, void* buf, int len);
+esp_err_t odrive_send_command(
+        uint8_t axis_id, uint8_t cmd_id, void* buf, int len);
 esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len);
