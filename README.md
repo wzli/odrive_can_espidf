@@ -2,7 +2,7 @@
 [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/build-system.html?highlight=component) component for [ODrive CAN interface](https://docs.odriverobotics.com/can-protocol).
 Tested on **ESP-IDF v4.3** with **ODrive fw-v0.5.2**.
 
-**For example usage, see -> [example.c] (example.c)**
+**For example usage, see -> [example.c](example.c)**
 
 ## ODrive Configuration
 There is a built-in DIP switch that toggles the 120Ω CAN termination resistor (`CAN-R` is off `CAN+R` is on).
