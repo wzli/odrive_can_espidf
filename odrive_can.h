@@ -129,27 +129,27 @@ typedef struct {
 typedef ODriveEncoderEstimates ODriveSensorlessEstimates;
 
 typedef struct {
+    bool motor_error : 1;
+    bool encoder_error : 1;
+    bool sensorless_error : 1;
     bool heartbeat : 1;
     bool encoder_count : 1;
     bool encoder_estimates : 1;
     bool sensorless_estimates : 1;
     bool iq : 1;
     bool vbus_voltage : 1;
-    bool motor_error : 1;
-    bool encoder_error : 1;
-    bool sensorless_error : 1;
 } ODriveUpdates;
 
 typedef struct {
+    uint64_t motor_error;
+    uint32_t encoder_error;
+    uint32_t sensorless_error;
     ODriveHeartbeat heartbeat;
     ODriveEncoderCount encoder_count;
     ODriveEncoderEstimates encoder_estimates;
     ODriveSensorlessEstimates sensorless_estimates;
     ODriveIq iq;
     float vbus_voltage;
-    uint64_t motor_error;
-    uint32_t encoder_error;
-    uint32_t sensorless_error;
     ODriveUpdates updates;
 
     void (*state_transition_callback)(uint8_t axis_id,
