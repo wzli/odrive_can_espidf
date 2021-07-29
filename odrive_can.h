@@ -1,5 +1,7 @@
 #pragma once
+#include <stdbool.h>
 #include <stdint.h>
+#include "esp_err.h"
 
 // refer to https://docs.odriverobotics.com/can-protocol
 #define ODRIVE_MSG_ID(AXIS_ID, CMD_ID) ((AXIS_ID << 5) | CMD_ID)
