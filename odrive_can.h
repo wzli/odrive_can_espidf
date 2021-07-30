@@ -56,6 +56,17 @@ typedef enum {
 } ODriveAxisState;
 
 typedef enum {
+    ODRIVE_AXIS_ERROR_INVALID_STATE = 0x1,
+    ODRIVE_AXIS_ERROR_WATCHDOG_TIMER_EXPIRED = 0x800,
+    ODRIVE_AXIS_ERROR_MIN_ENDSTOP_PRESSED = 0x1000,
+    ODRIVE_AXIS_ERROR_MAX_ENDSTOP_PRESSED = 0x2000,
+    ODRIVE_AXIS_ERROR_ESTOP_REQUESTED = 0x4000,
+    ODRIVE_AXIS_ERROR_HOMING_WITHOUT_ENDSTOP = 0x20000,
+    ODRIVE_AXIS_ERROR_OVER_TEMP = 0x40000,
+    ODRIVE_AXIS_ERROR_UNKNOWN_POSITION = 0x80000,
+} ODriveAxisError;
+
+typedef enum {
     ODRIVE_CONTROL_MODE_VOLTAGE = 0,
     ODRIVE_CONTROL_MODE_TORQUE = 1,
     ODRIVE_CONTROL_MODE_VELOCITY = 2,
@@ -160,5 +171,5 @@ typedef struct {
 } ODriveAxis;
 
 // Public Functions
-esp_err_t odrive_send_command(uint8_t axis_id, uint8_t cmd_id, const void* buf, int len);
+esp_err_t odrive_send_command(uint8_t axis_id, uint8_t cmd_id, const void* buf, uint8_t len);
 esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len);

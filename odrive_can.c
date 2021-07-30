@@ -8,7 +8,7 @@ static void log_msg(const twai_message_t* msg, const char* str) {
             msg->data_length_code);
 }
 
-esp_err_t odrive_send_command(uint8_t axis_id, uint8_t cmd_id, const void* buf, int len) {
+esp_err_t odrive_send_command(uint8_t axis_id, uint8_t cmd_id, const void* buf, uint8_t len) {
     twai_message_t msg = {};
     msg.identifier = ODRIVE_MSG_ID(axis_id, cmd_id);
     msg.data_length_code = len;
@@ -55,8 +55,8 @@ esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len) {
             case ODRIVE_CMD_HEARTBEAT: {
                 ODriveAxisState old_state = axes[axis_id].heartbeat.axis_current_state;
                 axes[axis_id].heartbeat = *(ODriveHeartbeat*) msg.data;
-                if (old_state != axes[axis_id].heartbeat.axis_current_state &&
-                        axes[axis_id].state_transition_callback) {
+                if (axes[axis_id].state_transition_callback &&
+                        old_state != axes[axis_id].heartbeat.axis_current_state) {
                     axes[axis_id].state_transition_callback(axis_id,
                             axes[axis_id].heartbeat.axis_current_state, old_state,
                             axes[axis_id].state_transition_context);
