@@ -4,12 +4,11 @@
 #include "odrive_can.h"
 
 static void log_msg(const twai_message_t* msg, const char* str) {
-    ESP_LOGW("ODriveCan", "%s (id %x flags %x len %d)", str, msg->identifier,
-            msg->flags, msg->data_length_code);
+    ESP_LOGW("ODriveCan", "%s (id %x flags %x len %d)", str, msg->identifier, msg->flags,
+            msg->data_length_code);
 }
 
-esp_err_t odrive_send_command(
-        uint8_t axis_id, uint8_t cmd_id, const void* buf, int len) {
+esp_err_t odrive_send_command(uint8_t axis_id, uint8_t cmd_id, const void* buf, int len) {
     twai_message_t msg = {};
     msg.identifier = ODRIVE_MSG_ID(axis_id, cmd_id);
     msg.data_length_code = len;
@@ -54,14 +53,13 @@ esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len) {
         // parse message
         switch (cmd_id) {
             case ODRIVE_CMD_HEARTBEAT: {
-                ODriveAxisState old_state =
-                        axes[axis_id].heartbeat.axis_current_state;
+                ODriveAxisState old_state = axes[axis_id].heartbeat.axis_current_state;
                 axes[axis_id].heartbeat = *(ODriveHeartbeat*) msg.data;
                 if (old_state != axes[axis_id].heartbeat.axis_current_state &&
                         axes[axis_id].state_transition_callback) {
                     axes[axis_id].state_transition_callback(axis_id,
-                            axes[axis_id].heartbeat.axis_current_state,
-                            old_state, axes[axis_id].state_transition_context);
+                            axes[axis_id].heartbeat.axis_current_state, old_state,
+                            axes[axis_id].state_transition_context);
                 }
                 axes[axis_id].updates.heartbeat = true;
                 break;
@@ -71,13 +69,11 @@ esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len) {
                 axes[axis_id].updates.encoder_count = true;
                 break;
             case ODRIVE_CMD_GET_ENCODER_ESTIMATES:
-                axes[axis_id].encoder_estimates =
-                        *(ODriveEncoderEstimates*) msg.data;
+                axes[axis_id].encoder_estimates = *(ODriveEncoderEstimates*) msg.data;
                 axes[axis_id].updates.encoder_estimates = true;
                 break;
             case ODRIVE_CMD_GET_SENSORLESS_ESTIMATES:
-                axes[axis_id].sensorless_estimates =
-                        *(ODriveSensorlessEstimates*) msg.data;
+                axes[axis_id].sensorless_estimates = *(ODriveSensorlessEstimates*) msg.data;
                 axes[axis_id].updates.sensorless_estimates = true;
                 break;
             case ODRIVE_CMD_GET_IQ:

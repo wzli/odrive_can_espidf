@@ -154,12 +154,11 @@ typedef struct {
     float vbus_voltage;
     ODriveUpdates updates;
 
-    void (*state_transition_callback)(uint8_t axis_id,
-            ODriveAxisState new_state, ODriveAxisState old_state, void* ctx);
+    void (*state_transition_callback)(
+            uint8_t axis_id, ODriveAxisState new_state, ODriveAxisState old_state, void* context);
     void* state_transition_context;
 } ODriveAxis;
 
 // Public Functions
-esp_err_t odrive_send_command(
-        uint8_t axis_id, uint8_t cmd_id, const void* buf, int len);
+esp_err_t odrive_send_command(uint8_t axis_id, uint8_t cmd_id, const void* buf, int len);
 esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len);

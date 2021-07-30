@@ -18,18 +18,16 @@ static void can_init() {
     ESP_ERROR_CHECK(twai_start());
 }
 
-static void odrive_state_transition_callback(uint8_t axis_id,
-        ODriveAxisState new_state, ODriveAxisState old_state, void* ctx) {
-    printf("axis_id %u, new_state %u, old_state %u\n", axis_id, new_state,
-            old_state);
+static void odrive_state_transition_callback(
+        uint8_t axis_id, ODriveAxisState new_state, ODriveAxisState old_state, void* context) {
+    printf("axis_id %u, new_state %u, old_state %u\n", axis_id, new_state, old_state);
 }
 
 void app_main() {
     can_init();
     // objects to store received updates, callbacks are optional
-    ODriveAxis axes[N_MOTORS] = {
-            {.state_transition_callback = odrive_state_transition_callback,
-                    .state_transition_context = NULL},
+    ODriveAxis axes[N_MOTORS] = {{.state_transition_callback = odrive_state_transition_callback,
+                                         .state_transition_context = NULL},
             {.state_transition_callback = odrive_state_transition_callback,
                     .state_transition_context = NULL}};
     // initialize odrive axes
@@ -39,25 +37,24 @@ void app_main() {
                 ODRIVE_CONTROL_MODE_POSITION,
                 ODRIVE_INPUT_MODE_PASSTHROUGH,
         };
-        ESP_ERROR_CHECK(odrive_send_command(
-                i, ODRIVE_CMD_SET_CONTROLLER_MODES, &mode, sizeof(mode)));
+        ESP_ERROR_CHECK(
+                odrive_send_command(i, ODRIVE_CMD_SET_CONTROLLER_MODES, &mode, sizeof(mode)));
         // send command to request closed loop state
         uint32_t state = ODRIVE_AXIS_STATE_CLOSED_LOOP_CONTROL;
-        ESP_ERROR_CHECK(odrive_send_command(
-                i, ODRIVE_CMD_SET_REQUESTED_STATE, &state, sizeof(state)));
+        ESP_ERROR_CHECK(
+                odrive_send_command(i, ODRIVE_CMD_SET_REQUESTED_STATE, &state, sizeof(state)));
     }
     // main loop
     for (TickType_t tick = xTaskGetTickCount();; vTaskDelayUntil(&tick, 10)) {
         for (int i = 0; i < N_MOTORS; ++i) {
             // send command for position control
             ODriveInputPosition input_pos = {tick / 100, 0, 0};
-            ESP_ERROR_CHECK(odrive_send_command(i, ODRIVE_CMD_SET_INPUT_POS,
-                    &input_pos, sizeof(input_pos)));
+            ESP_ERROR_CHECK(odrive_send_command(
+                    i, ODRIVE_CMD_SET_INPUT_POS, &input_pos, sizeof(input_pos)));
             // receive and print updates
             ESP_ERROR_CHECK(odrive_receive_updates(axes, N_MOTORS));
             printf("tick %u, axis_id %u, state %u, pos %f, vel %f\n", tick, i,
-                    axes[i].heartbeat.axis_current_state,
-                    axes[i].encoder_estimates.position,
+                    axes[i].heartbeat.axis_current_state, axes[i].encoder_estimates.position,
                     axes[i].encoder_estimates.velocity);
         }
     }
