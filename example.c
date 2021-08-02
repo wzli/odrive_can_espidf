@@ -47,9 +47,9 @@ void app_main() {
     // main loop
     for (TickType_t tick = xTaskGetTickCount();; vTaskDelayUntil(&tick, 10)) {
         for (int i = 0; i < N_MOTORS; ++i) {
-            ESP_ERROR_CHECK(odrive_send_command(i, ODRIVE_CMD_GET_MOTOR_ERROR, 0, 0));
+            ESP_ERROR_CHECK(odrive_send_get_command(i, ODRIVE_CMD_GET_MOTOR_ERROR);
             vTaskDelay(1);
-            ESP_ERROR_CHECK(odrive_send_command(i, ODRIVE_CMD_GET_ENCODER_ERROR, 0, 0));
+            ESP_ERROR_CHECK(odrive_send_get_command(i, ODRIVE_CMD_GET_ENCODER_ERROR);
             vTaskDelay(1);
             uint32_t state = ODRIVE_AXIS_STATE_CLOSED_LOOP_CONTROL;
             if (axes[i].heartbeat.axis_current_state != state) {
