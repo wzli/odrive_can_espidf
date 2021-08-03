@@ -41,21 +41,9 @@ esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len) {
         }
         // check message length
         uint8_t cmd_id = ODRIVE_CMD_ID(msg.identifier);
-        switch (cmd_id) {
-            // fallthrough
-            case ODRIVE_CMD_GET_ENCODER_ERROR:
-            case ODRIVE_CMD_GET_SENSORLESS_ERROR:
-            case ODRIVE_CMD_GET_VBUS_VOLTAGE:
-                if (msg.data_length_code != 4) {
-                    log_msg(&msg, "received message with invalid length");
-                    continue;
-                }
-                break;
-            default:
-                if (msg.data_length_code != 8) {
-                    log_msg(&msg, "received message with invalid length");
-                    continue;
-                }
+        if (msg.data_length_code != 8) {
+            log_msg(&msg, "received message with invalid length");
+            continue;
         }
         // parse message
         switch (cmd_id) {
