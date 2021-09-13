@@ -79,13 +79,17 @@ esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len) {
                 axes[axis_id].vbus_voltage = *(float*) msg.data;
                 axes[axis_id].updates.vbus_voltage = true;
                 break;
+            case ODRIVE_CMD_GET_SYSTEM_ERROR:
+                axes[axis_id].system_error = *(uint32_t*) msg.data;
+                axes[axis_id].updates.system_error = true;
+                break;
+            case ODRIVE_CMD_GET_CONTROLLER_ERROR:
+                axes[axis_id].controller_error = *(uint32_t*) msg.data;
+                axes[axis_id].updates.controller_error = true;
+                break;
             case ODRIVE_CMD_GET_MOTOR_ERROR:
                 axes[axis_id].motor_error = *(uint64_t*) msg.data;
                 axes[axis_id].updates.motor_error = true;
-                break;
-            case ODRIVE_CMD_GET_ODRIVE_ERROR:
-                axes[axis_id].odrive_error = *(uint32_t*) msg.data;
-                axes[axis_id].updates.odrive_error = true;
                 break;
             case ODRIVE_CMD_GET_ENCODER_ERROR:
                 axes[axis_id].encoder_error = *(uint32_t*) msg.data;
