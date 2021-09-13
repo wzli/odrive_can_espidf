@@ -83,6 +83,10 @@ esp_err_t odrive_receive_updates(ODriveAxis* axes, uint8_t len) {
                 axes[axis_id].motor_error = *(uint64_t*) msg.data;
                 axes[axis_id].updates.motor_error = true;
                 break;
+            case ODRIVE_CMD_GET_ODRIVE_ERROR:
+                axes[axis_id].odrive_error = *(uint32_t*) msg.data;
+                axes[axis_id].updates.odrive_error = true;
+                break;
             case ODRIVE_CMD_GET_ENCODER_ERROR:
                 axes[axis_id].encoder_error = *(uint32_t*) msg.data;
                 axes[axis_id].updates.encoder_error = true;

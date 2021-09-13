@@ -37,6 +37,18 @@
 #define ODRIVE_CMD_SET_LINEAR_COUNT 0x19
 #define ODRIVE_CMD_CANOPEN_HEARTBEAT 0x700
 
+// custom ODrive commands
+//
+// take single float input
+#define ODRIVE_CMD_SET_POS_GAIN 0x1A
+#define ODRIVE_CMD_SET_VEL_GAIN 0x1B
+#define ODRIVE_CMD_SET_VEL_INTEGRATOR_GAIN 0x1C
+#define ODRIVE_CMD_SET_CURRENT_CTRL_BW 0x1D
+#define ODRIVE_CMD_SET_ENCODER_BW 0x1E
+
+#define ODRIVE_CMD_GET_ODRIVE_ERROR 0x20
+#define ODRIVE_CMD_SET_SAVE_CONFIGURATION 0x21
+
 // Protocol Constants
 typedef enum {
     ODRIVE_AXIS_STATE_UNDEFINED = 0,
@@ -143,6 +155,7 @@ typedef ODriveEncoderEstimates ODriveSensorlessEstimates;
 
 typedef struct {
     bool motor_error : 1;
+    bool odrive_error : 1;
     bool encoder_error : 1;
     bool sensorless_error : 1;
     bool heartbeat : 1;
@@ -155,6 +168,7 @@ typedef struct {
 
 typedef struct {
     uint64_t motor_error;
+    uint32_t odrive_error;
     uint32_t encoder_error;
     uint32_t sensorless_error;
     ODriveHeartbeat heartbeat;
