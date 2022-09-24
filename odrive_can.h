@@ -95,7 +95,7 @@ typedef enum {
 
 typedef struct {
     uint32_t axis_error;
-    uint32_t axis_current_state;
+    uint8_t axis_current_state;
 } ODriveHeartbeat;
 
 typedef struct {
